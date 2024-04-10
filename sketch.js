@@ -22,6 +22,6 @@ function w(val) {
 
 // use relative coords for height, 0.0 - 1.0
 function h(val) {
-if (val == null) return height;
-return height * val;
+    if (val == null) return height;
+    return height * val;
 }
