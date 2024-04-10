@@ -11,6 +11,11 @@ function draw() {
     noFill(); // no fill
     stroke(0, 0, 0); // black stroke
     strokeWeight(w(0.001)); // light stroke weight
+
+    // draw some concentric circles
+    for (let radius = 0.1; radius < 0.4; radius += 0.05) {
+        circle(w(0.5), h(0.5), w(radius*2));
+    }
 }
 
 // use relative coords for width, 0.0 - 1.0
