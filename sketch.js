@@ -12,9 +12,18 @@ function draw() {
     stroke(0, 0, 0); // black stroke
     strokeWeight(w(0.001)); // light stroke weight
 
-    // draw some concentric circles
+    // concentric circles using polygons, so we can deform them
+    const numSteps = 10;
+    const radiansPerStep = (Math.PI * 2) / numSteps;
     for (let radius = 0.1; radius < 0.4; radius += 0.05) {
-        circle(w(0.5), h(0.5), w(radius*2));
+    beginShape();
+    for (let theta = 0; theta < Math.PI * 2; theta += radiansPerStep) {
+        const x = 0.5 + radius * Math.cos(theta);
+        const y = 0.5 + radius * Math.sin(theta);
+        
+        vertex(w(x), h(y));
+    }
+    endShape(CLOSE); // CLOSE because the last point is not the first point
     }
 }
 
