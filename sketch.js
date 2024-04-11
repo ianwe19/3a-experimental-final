@@ -1,5 +1,5 @@
 function setup() {
-  createCanvas(400, 400);
+  createCanvas(800, 800);
 
   //             Hue  Sat  Bri  Alpha
   //              v    v    v    v 
@@ -7,21 +7,27 @@ function setup() {
 }
 
 function draw() {
-    background(0, 0, 100); // white background
+    background(0, 255, 0); // white background
     noFill(); // no fill
-    stroke(0, 0, 0); // black stroke
-    strokeWeight(w(0.001)); // light stroke weight
+    stroke(frameCount / 2, frameCount / 2, frameCount / 3); // black stroke
+    strokeWeight(w(0.003)); // light stroke weight
 
-    for (let radius = 0.05; radius < 0.4; radius += 0.05) {
+    // change numbers to modify circles (size and number), may kill performance
+    for (let radius = 0.05; radius < 0.7; radius += 0.01) {
 
-        // createt array of vertices to make our concentric circles
-        const points = makeCircle(20, radius);
+        // make some concentric circles (num of sides, radius)
+        const circle = makeCircle(20, radius);
+
+        // user perlin noise to offset vertices
+        const distortedCircle = distortPolygon(circle);
+
+        const smoothCircle = chaikin(distortedCircle, 3);
         
         // begin drawing path
         beginShape();
 
         // iterate through points array, set vertex at each
-        points.forEach(point => {
+        smoothCircle.forEach(point => {
           vertex(w(point[0]), h(point[1]));
         });
 
@@ -56,3 +62,46 @@ function makeCircle(numSides, radius) {
 
     return points;
 }
+
+function distortPolygon(polygon) {
+
+    // map 
+    return polygon.map(point => {
+        const x = point[0];
+        const y = point[1];
+        const distance = dist(0.5, 0.5, x, y);
+
+        const z = frameCount / 500;
+        const z2 = frameCount / 200;
+        
+        // use perlin noise to offset x, y of vertex
+        const noiseFn = (x, y) => {
+            const noiseX = (x + 0.31) * distance * 2 + z;
+            const noiseY = (y - 1.73) * distance * 2 + z2;
+            return noise(noiseX, noiseY * frameCount / 1500, z);
+        };
+          
+        // get noise value between 0.0 and 1.0, store in var theta
+        const theta = noiseFn(x, y) * Math.PI * 3;
+        
+        // nudge vertices based on noise value
+        const amountToNudge = 0.08 - (Math.cos(z) * 0.08);
+
+        const newX = x + (amountToNudge * Math.cos(theta));
+        const newY = y + (amountToNudge * Math.sin(theta));
+        
+        return [newX, newY];
+    });
+}
+
+function chaikin(arr, num) {
+    if (num === 0) return arr;
+    const l = arr.length;
+    const smooth = arr.map((c,i) => {
+      return [[0.75*c[0] + 0.25*arr[(i + 1)%l][0],
+               0.75*c[1] + 0.25*arr[(i + 1)%l][1]],
+              [0.25*c[0] + 0.75*arr[(i + 1)%l][0],
+              0.25*c[1] + 0.75*arr[(i + 1)%l][1]]];
+      }).flat();
+    return num === 1 ? smooth : chaikin(smooth, num - 1)
+  }
