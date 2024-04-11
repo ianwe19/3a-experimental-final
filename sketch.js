@@ -1,13 +1,22 @@
-function setup() {
-  createCanvas(800, 800);
+let polySynth;
+let fMinScale = ['F4', 'G4', 'Ab4', 'Bb4', 'C4', 'Db4', 'Eb4', 'F5'];
 
-  //             Hue  Sat  Bri  Alpha
-  //              v    v    v    v 
-  colorMode(HSB, 360, 100, 100, 1.0);
+
+function setup() {
+    let canvas = createCanvas(400, 400);
+
+    //             Hue  Sat  Bri  Alpha
+    //              v    v    v    v 
+    colorMode(HSB, 360, 100, 100, 1.0);
+
+    // create polysynth object
+    polySynth = new p5.PolySynth();
+
+    canvas.mousePressed(playSynth);
 }
 
 function draw() {
-    background(0, 255, 0); // white background
+    background(0, 255, 0); // black background
     noFill(); // no fill
     stroke(frameCount / 2, frameCount / 2, frameCount / 3); // black stroke
     strokeWeight(w(0.003)); // light stroke weight
@@ -104,4 +113,26 @@ function chaikin(arr, num) {
               0.25*c[1] + 0.75*arr[(i + 1)%l][1]]];
       }).flat();
     return num === 1 ? smooth : chaikin(smooth, num - 1)
-  }
+}
+
+// *************
+// * POLYSYNTH *
+// *************
+
+function playSynth() {
+    userStartAudio();
+  
+    // note duration (in seconds)
+    let dur = 1.5;
+  
+    // time from now (in seconds)
+    let time = 0;
+  
+    // velocity (volume, from 0 to 1)
+    let vel = 0.1;
+  
+    // notes can overlap with each other
+    polySynth.play('G2', vel, 0, dur);
+    polySynth.play('C3', vel, time += 1/3, dur);
+    polySynth.play('G3', vel, time += 1/3, dur);
+}
