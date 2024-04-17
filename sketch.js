@@ -9,7 +9,7 @@ let synthFilter = new p5.Filter('lowpass');
 
 
 function setup() {
-    let canvas = createCanvas(400, 400);
+    let canvas = createCanvas(windowWidth, windowHeight);
 
     //             Hue  Sat  Bri  Alpha
     //              v    v    v    v 
