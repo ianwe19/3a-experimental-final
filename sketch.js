@@ -41,7 +41,7 @@ function draw() {
     strokeWeight(w(0.003)); // light stroke weight
 
     // change numbers to modify circles (size and number), may kill performance
-    for (let radius = 0.05; radius < 0.7; radius += 0.01) {
+    for (let radius = 0.05; radius < 1; radius += 0.009) {
 
         // make some concentric circles (num of sides, radius)
         const circle = makeCircle(20, radius);
@@ -129,14 +129,14 @@ function distortPolygon(polygon) {
         const noiseFn = (x, y) => {
             const noiseX = (x + 0.31) * distance * 2 + z;
             const noiseY = (y - 1.73) * distance * 2 + z2;
-            return noise(noiseX, noiseY * frameCount / 1500, z);
+            return noise(noiseX, noiseY * frameCount / 2000, z);
         };
           
         // get noise value between 0.0 and 1.0, store in var theta
         const theta = noiseFn(x, y) * Math.PI * 3;
         
         // nudge vertices based on noise value
-        const amountToNudge = 0.08 - (Math.cos(z) * 0.08);
+        const amountToNudge = 0.08 - (Math.cos(z) * 0.9);
 
         const newX = x + (amountToNudge * Math.cos(theta));
         const newY = y + (amountToNudge * Math.sin(theta));
