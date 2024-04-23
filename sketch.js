@@ -1,90 +1,60 @@
-
-let fMinScale = ['F3', 'G3', 'Ab3', 'Bb3', 'C3', 'Db3', 'Eb3', 'F4'];
-
-let osc1 = new p5.Oscillator('sawtooth');
-let osc2 = new p5.Oscillator('sawtooth');
-let osc3 = new p5.Oscillator('sine');
-
-let synthFilter = new p5.Filter('lowpass');
-
+let userClicked, canvas;
 
 function setup() {
-    let canvas = createCanvas(windowWidth - 1, windowHeight);
+    userClicked = false;
+
+    canvas = createCanvas(windowWidth - 1, windowHeight);
 
     //             Hue  Sat  Bri  Alpha
     //              v    v    v    v 
     colorMode(HSB, 360, 100, 100, 1.0);
 
-
-    osc1.start();
-    osc1.disconnect();
-    osc1.connect(synthFilter);
-    osc1.amp(0.3);
-    
-    osc2.start();
-    osc2.disconnect();
-    osc2.connect(synthFilter);
-    osc2.amp(0.3);
-    
-    osc3.start();
-    osc3.disconnect();
-    osc3.connect(synthFilter);
-    osc3.amp(0.5);
+    synth1 = new Synth(0.5, 0.3, 0.5);
 }
 
 function draw() {
     
+    if (userClicked) {
+        background(0, 255, 0); // black background
+        noFill(); // no fill
+        // stroke(frameCount / 2, frameCount / 2, frameCount / 3); // black stroke
+        strokeWeight(w(0.003)); // light stroke weight
 
-    background(0, 255, 0); // black background
-    noFill(); // no fill
-    // stroke(frameCount / 2, frameCount / 2, frameCount / 3); // black stroke
-    strokeWeight(w(0.003)); // light stroke weight
+        if (!synth1.isRunning) {
+            synth1.startSynth();
+            synth1.isRunning = true;
+        }
 
-    // change numbers to modify circles (size and number), may kill performance
-    for (let radius = 0.05; radius < 0.7; radius += 0.01) {
+        // change numbers to modify circles (size and number), may kill performance
+        for (let radius = 0.05; radius < 0.7; radius += 0.01) {
 
-        // make some concentric circles (num of sides, radius)
-        const circle = makeCircle(20, radius);
+            // make some concentric circles (num of sides, radius)
+            const circle = makeCircle(20, radius);
 
-        // use perlin noise to offset vertices
-        const distortedCircle = distortPolygon(circle);
+            // use perlin noise to offset vertices
+            const distortedCircle = distortPolygon(circle);
 
-        const smoothCircle = chaikin(distortedCircle, 3);
-        
-        // begin drawing path
-        beginShape();
+            const smoothCircle = chaikin(distortedCircle, 3);
+            
+            // begin drawing path
+            beginShape();
 
-        // iterate through points array, set vertex at each
-        smoothCircle.forEach(point => {
-          vertex(w(point[0]), h(point[1]));
-        });
+            // iterate through points array, set vertex at each
+            smoothCircle.forEach(point => {
+            vertex(w(point[0]), h(point[1]));
+            });
 
-        // CLOSE because the last point is not the first point
-        endShape(CLOSE); 
+            // CLOSE because the last point is not the first point
+            endShape(CLOSE); 
+        }
+
+        frameRate(synth1.getActiveFreq() / 2);
+
+        cutoffColor = map(synth1.getActiveCutoff(), 20, 20000, 5, 100);
+        freqColor = map(synth1.getActiveFreq(), 60, 260, 0, 360);
+        stroke(freqColor, cutoffColor, 100, 1.0);
     }
-
-    // synth control
-    let freqToPlay = map(mouseY, 0, width, 60, 260);
-    let cutoff = map(mouseX, 0, height, 20, 20000);
-    osc1.freq(freqToPlay);
-    osc2.freq(freqToPlay * (3/2));
-    osc3.freq(freqToPlay * (2/3));
-    synthFilter.freq(cutoff);
-
-    frameRate(freqToPlay / 2);
-
-    cutoffColor = map(cutoff, 20, 20000, 5, 100);
-    freqColor = map(freqToPlay, 60, 260, 0, 360);
-    stroke(freqColor, cutoffColor, 100, 1.0);
-
-    if (osc1.getAmp() == 0.0) {
-        // frameRate(0);
-        console.log(1);
-    }
-    else {
-        frameRate(freqToPlay / 2);
-    }
-
+    
 }
 
 // use relative coords for width, 0.0 - 1.0
@@ -155,4 +125,8 @@ function chaikin(arr, num) {
               0.25*c[1] + 0.75*arr[(i + 1)%l][1]]];
       }).flat();
     return num === 1 ? smooth : chaikin(smooth, num - 1)
+}
+
+function keyTyped() {
+    userClicked = true;
 }
