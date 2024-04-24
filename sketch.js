@@ -29,7 +29,7 @@ function draw() {
         background(0, 255, 0); // black background
         noFill(); // no fill
         // stroke(frameCount / 2, frameCount / 2, frameCount / 3); // black stroke
-        strokeWeight(w(0.004));
+        strokeWeight(w(0.001));
 
         // change numbers to modify circles (size and number), may kill performance
         for (let radius = 0.05; radius < 0.9; radius += 0.01) {
@@ -66,7 +66,7 @@ function draw() {
 
         cutoffColor = map(cutoff, 20, 12000, 5, 120);
         freqColor = map(freqToPlay, 60, 260, 0, 360);
-        stroke(freqColor, cutoffColor, 100, 1.0);
+        stroke(freqColor, 100, cutoffColor, 1.0);
     }
     
 
@@ -88,7 +88,7 @@ function h(val) {
 // make concentric circles using polygons, so we can deform them
 function makeCircle(numSides, radius) {
     const points = [];
-    const radiansPerStep = (Math.PI * 3) / numSides;
+    const radiansPerStep = (Math.PI * 2.5) / numSides;
     for (let theta = 0; theta < Math.PI * 3; theta += radiansPerStep) {
         const x = 0.5 + radius * Math.cos(theta);
         const y = 0.5 + radius * Math.sin(theta);
