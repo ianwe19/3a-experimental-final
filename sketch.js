@@ -29,7 +29,7 @@ function draw() {
         background(0, 255, 0); // black background
         noFill(); // no fill
         // stroke(frameCount / 2, frameCount / 2, frameCount / 3); // black stroke
-        strokeWeight(w(0.006));
+        strokeWeight(w(0.0045));
 
         // change numbers to modify circles (size and number), may kill performance
         for (let radius = 0.05; radius < 0.9; radius += 0.01) {
