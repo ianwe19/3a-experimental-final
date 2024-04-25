@@ -68,6 +68,11 @@ function draw() {
         freqColor = map(freqToPlay, 60, 260, 0, 360);
         stroke(freqColor, 100, cutoffColor, 1.0);
     }
+    else {
+        textSize(36);
+        fill('white');
+        text("press any key to start", windowWidth / 2, windowHeight / 2);
+    }
     
 
 }
