@@ -71,7 +71,8 @@ function draw() {
     else {
         textSize(36);
         fill('white');
-        text("press any key to start", windowWidth / 2, windowHeight / 2);
+        text("press any key", (windowWidth - 100) / 2, windowHeight / 2);
+        text("\(the text is off center on purpose\)", (windowWidth - 400) / 2, windowHeight / 2 + 50);
     }
     
 
