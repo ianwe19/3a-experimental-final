@@ -2,8 +2,9 @@ let canvas, userStarted, synthRunning;
 let fMinScale = ['F3', 'G3', 'Ab3', 'Bb3', 'C3', 'Db3', 'Eb3', 'F4'];
 
 let osc1 = new p5.Oscillator('sawtooth'); // MID
-let osc2 = new p5.Oscillator('sawtooth'); // HIGH FIFTH
+let osc2 = new p5.Oscillator('sawtooth'); // FIFTH
 let osc3 = new p5.Oscillator('sine'); // BASS -1 OCTAVE
+let osc4 = new p5.Oscillator('sawtooth'); // HIGH FIFTH
 
 let synthFilter = new p5.Filter('lowpass');
 
@@ -60,6 +61,7 @@ function draw() {
         osc1.freq(freqToPlay);
         osc2.freq(freqToPlay * (3/2) / 2);
         osc3.freq(freqToPlay * (1/2));
+        osc4.freq(freqToPlay * (3/2));
         synthFilter.freq(cutoff);
 
         frameRate(freqToPlay / 2);
@@ -164,10 +166,15 @@ function startSynth() {
     osc2.start();
     osc2.disconnect();
     osc2.connect(synthFilter);
-    osc2.amp(0.2);
+    osc2.amp(0.3);
     
     osc3.start();
     osc3.disconnect();
     osc3.connect(synthFilter);
     osc3.amp(0.5);
+
+    osc4.start();
+    osc4.disconnect();
+    osc4.connect(synthFilter);
+    osc4.amp(0.1);
 }
