@@ -56,7 +56,7 @@ function draw() {
 
         // synth control
         let freqToPlay = map(mouseY, 0, width, 20, 300);
-        let cutoff = map(mouseX, 0, height, 20, 12000);
+        let cutoff = map(mouseX, 0, height, 20, 2000);
         osc1.freq(freqToPlay);
         osc2.freq(freqToPlay * (3/2));
         osc3.freq(freqToPlay * (1/2));
@@ -64,7 +64,7 @@ function draw() {
 
         frameRate(freqToPlay / 2);
 
-        cutoffColor = map(cutoff, 20, 12000, 5, 120);
+        cutoffColor = map(cutoff, 20, 2000, 5, 120);
         freqColor = map(freqToPlay, 60, 260, 0, 360);
         stroke(freqColor, 100, cutoffColor, 1.0);
     }
