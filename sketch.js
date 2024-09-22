@@ -70,8 +70,10 @@ function draw() {
     }
     else {
         textSize(36);
-        fill('white');
+        textStyle(NORMAL);
         textAlign(CENTER);
+        textFont(loadFont('assets/fonts/AppleGaramond-Light.ttf'));
+        fill('white');
         text("press space bar to start", windowWidth / 2, windowHeight / 2);
         text("and then move the mouse or touchpad", windowWidth / 2, windowHeight / 2 + 100);
     }
