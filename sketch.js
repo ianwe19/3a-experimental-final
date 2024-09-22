@@ -71,8 +71,9 @@ function draw() {
     else {
         textSize(36);
         fill('white');
-        text("press space bar to start, and then move the mouse", (windowWidth - 100) / 2, windowHeight / 2);
-        text("\(the text is off center on purpose\)", (windowWidth - 400) / 2, windowHeight / 2 + 50);
+        textAlign(CENTER);
+        text("press space bar to start", windowWidth / 2, windowHeight / 2);
+        text("and then move the mouse or touchpad", windowWidth / 2, windowHeight / 2 + 100);
     }
     
 
