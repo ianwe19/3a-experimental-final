@@ -1,9 +1,10 @@
 let canvas, userStarted, synthRunning;
 let fMinScale = ['F3', 'G3', 'Ab3', 'Bb3', 'C3', 'Db3', 'Eb3', 'F4'];
 
-let osc1 = new p5.Oscillator('sawtooth');
-let osc2 = new p5.Oscillator('sawtooth');
-let osc3 = new p5.Oscillator('sine');
+let osc1 = new p5.Oscillator('sawtooth'); // MID
+let osc2 = new p5.Oscillator('sawtooth'); // FIFTH
+let osc3 = new p5.Oscillator('sine'); // BASS -1 OCTAVE
+let osc4 = new p5.Oscillator('sawtooth'); // HIGH FIFTH
 
 let synthFilter = new p5.Filter('lowpass');
 
@@ -55,16 +56,17 @@ function draw() {
         }
 
         // synth control
-        let freqToPlay = map(mouseY, 0, width, 20, 300);
-        let cutoff = map(mouseX, 0, height, 20, 12000);
+        let freqToPlay = map(mouseY, 0, width, 60, 500);
+        let cutoff = map(mouseX, 0, height, 20, 5000);
         osc1.freq(freqToPlay);
-        osc2.freq(freqToPlay * (3/2));
+        osc2.freq(freqToPlay * (3/2) / 2);
         osc3.freq(freqToPlay * (1/2));
+        osc4.freq(freqToPlay * (3/2));
         synthFilter.freq(cutoff);
 
         frameRate(freqToPlay / 2);
 
-        cutoffColor = map(cutoff, 20, 12000, 5, 120);
+        cutoffColor = map(cutoff, 20, 5000, 5, 120);
         freqColor = map(freqToPlay, 60, 260, 0, 360);
         stroke(freqColor, 100, cutoffColor, 1.0);
     }
@@ -170,4 +172,9 @@ function startSynth() {
     osc3.disconnect();
     osc3.connect(synthFilter);
     osc3.amp(0.5);
+
+    osc4.start();
+    osc4.disconnect();
+    osc4.connect(synthFilter);
+    osc4.amp(0.1);
 }
