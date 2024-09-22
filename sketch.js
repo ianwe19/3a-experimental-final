@@ -56,7 +56,7 @@ function draw() {
         }
 
         // synth control
-        let freqToPlay = map(mouseY, 0, width, 20, 300);
+        let freqToPlay = map(mouseY, 0, width, 60, 500);
         let cutoff = map(mouseX, 0, height, 20, 5000);
         osc1.freq(freqToPlay);
         osc2.freq(freqToPlay * (3/2) / 2);
